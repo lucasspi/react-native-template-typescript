@@ -1,0 +1,26 @@
+{
+  "name": "reactnativetemplatetypescript",
+  "displayName": "Aberdein Considine",
+  "expo": {
+    "name": "Aberdein Considine",
+    "slug": "reactnativetemplatetypescript",
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#021D45"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aberdeinconsidine"
+    },
+    "android": {
+      "package": "com.aberdeinconsidine",
+      "versionCode": 0
+    }
+  }
+}
