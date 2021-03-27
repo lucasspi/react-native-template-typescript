@@ -57,8 +57,5 @@ export default StyleSheet.create({
   },
   scroll: {
     paddingBottom: 150,
-  },
-  contentEye: {
-    padding: 6
   }
 });

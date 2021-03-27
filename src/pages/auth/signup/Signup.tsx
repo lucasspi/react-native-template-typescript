@@ -1,36 +1,35 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../../../components/Button";
 import Divider from "../../../components/Divider";
 import HeaderNavigation from "../../../components/HeaderNavigation";
 import Input from "../../../components/Input";
 import Spacer from "../../../components/Spacer";
 import theme from "../../../constants/theme";
-import styles from "./Signin.styles";
-import { emailValidation, passwordValidation } from "../../../utils/validators";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { connect } from "react-redux";
+import styles from "./Signup.styles";
+import {
+  fullNameValidation,
+  emailValidation,
+  passwordValidation,
+} from "../../../utils/validators";
 
-const Signin: React.FC = (props: any) => {
+const Signup: React.FC = (props: any) => {
+  const [name, setName] = useState("");
+  const [errorName, setErrorName] = useState(false);
   const [email, setEmail] = useState("");
   const [errorEmail, setErrorEmail] = useState(false);
   const [password, setPassword] = useState("");
   const [errorPassword, setErrorPassword] = useState(false);
-  const [isProtected, setProtect] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const validateAll = () => {
+    setErrorName(!fullNameValidation(name));
     setErrorEmail(!emailValidation(email));
     setErrorPassword(!passwordValidation(password));
   };
   const submit = () => {
     validateAll();
-    if (!errorEmail && !errorPassword) {
-      AsyncStorage.setItem("userAuthenticated", "true").then((res) => {
-        props.performAuth();
-      });
-    }
   };
 
   return (
@@ -38,16 +37,15 @@ const Signin: React.FC = (props: any) => {
       <HeaderNavigation onBack={() => props.navigation.pop()} />
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.container}>
-          <Text style={styles.title}>Login to your account</Text>
+          <Text style={styles.title}>Sign up with your email</Text>
           <View style={styles.row}>
-            <Text style={styles.subtitle}>Don’t yet have an account?</Text>
+            <Text style={styles.subtitle}>Already an account?</Text>
             <TouchableOpacity
-              onPress={() => props.navigation.replace("Signup")}
+              onPress={() => props.navigation.replace("Signin")}
             >
-              <Text style={styles.subtitleSpan}> Sign up</Text>
+              <Text style={styles.subtitleSpan}> Login</Text>
             </TouchableOpacity>
           </View>
-
           <View style={styles.authBtnsContainer}>
             <View style={styles.flex}>
               <Button
@@ -67,8 +65,14 @@ const Signin: React.FC = (props: any) => {
               />
             </View>
           </View>
-          <Divider height={48} title={"or log in with email"} />
+          <Divider height={48} title={"or sign up with email"} />
           <View style={styles.inputsContainer}>
+            <Input
+              label="Name"
+              onChangeText={(v: string) => setName(v)}
+              hintError={errorName ? "Full name is invalid" : ""}
+            />
+            <Spacer />
             <Input
               autoCompleteType={"email"}
               keyboardType={"email-address"}
@@ -78,20 +82,13 @@ const Signin: React.FC = (props: any) => {
             />
             <Spacer />
             <Input
-              secureTextEntry={isProtected}
+              secureTextEntry
               label="Password"
               onChangeText={(v: string) => setPassword(v)}
               hintError={errorPassword ? "Password is invalid" : ""}
               children={
-                <TouchableOpacity
-                  style={styles.contentEye}
-                  onPress={() => setProtect(!isProtected)}
-                >
-                  <Icon
-                    name={isProtected ? "eye-slash" : "eye"}
-                    size={20}
-                    color={theme.darkGrey}
-                  />
+                <TouchableOpacity>
+                  <Text style={styles.forgotPassLabel}>Forgot Password?</Text>
                 </TouchableOpacity>
               }
             />
@@ -101,24 +98,12 @@ const Signin: React.FC = (props: any) => {
               Privacy Policy.
             </Text>
             <Spacer />
-            <Button title="Continue" onClick={submit} />
+            <Button onClick={submit} title="Continue" loading={loading} />
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-export default connect(
-  (state: { authState: any }) => ({
-    authState: state.authState,
-  }),
-  (dispatch) => {
-    return {
-      performAuth() {
-        dispatch({
-          type: "PERFORM_AUTH",
-        });
-      },
-    };
-  }
-)(Signin);
+
+export default Signup;

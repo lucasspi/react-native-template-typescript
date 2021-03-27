@@ -1,9 +1,9 @@
 {
-  "name": "reactnativetemplatetypescript",
+  "name": "aberdeinmobile",
   "displayName": "Aberdein Considine",
   "expo": {
     "name": "Aberdein Considine",
-    "slug": "reactnativetemplatetypescript",
+    "slug": "aberdeinmobile",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",

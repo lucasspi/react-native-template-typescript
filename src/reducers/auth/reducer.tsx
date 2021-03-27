@@ -20,6 +20,12 @@ const AuthReducer = (
       newState.error = "";
       return newState;
 
+    case "UNPERFORM_LOGIN":
+      newState.loading = action.loading;
+      newState.userAuthenticated = false;
+      newState.error = "";
+      return newState;
+
     default:
       return newState;
   }

@@ -3,10 +3,16 @@ import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
+import AsyncStorage from "@react-native-community/async-storage";
 
 function RouterComponent(props: any) {
   useEffect(() => {
-    //   props.performAuth();
+    AsyncStorage.getItem("userAuthenticated").then((data: any) => {
+      data = JSON.parse(data);
+      if (data) {
+        props.performAuth();
+      }
+    });
   }, []);
   return (
     <NavigationContainer>
